@@ -1,8 +1,7 @@
-import java.util.ArrayList;
 
 public class FitnessParticipant implements IParticipant {	
 	private String name;
-	private FitnessLeadTrainer trainer;
+	private ILeadTrainer trainer;
 	private IExercise currentExercise;
 
 	public FitnessParticipant(String name) {
@@ -21,7 +20,7 @@ public class FitnessParticipant implements IParticipant {
 		System.out.println("Participant (" + name + ") is now performing  " + currentExercise.getName());
 	}
 	
-	public void setLead(FitnessLeadTrainer trainer) {
+	public void setLead(ILeadTrainer trainer) {
 		this.trainer = trainer;
 	}
 }

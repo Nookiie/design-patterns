@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class FitnessLeadTrainer implements ILead {
+public class FitnessLeadTrainer implements ILeadTrainer {
 	 private String name;
 	 private IExercise currentExercise;
 	 private IFitnessIntructor instructor;
@@ -30,7 +30,8 @@ public class FitnessLeadTrainer implements ILead {
 	@Override
 	public void update() {
 		this.currentExercise = instructor.getExercise();
-		System.out.println("Lead (" + name + ") was notified of new exercise on camera: " + currentExercise.getName() + ", executing");
+		System.out.println("Lead (" + name + ") was notified of new exercise on camera: " + currentExercise.getName() + " "
+				+ "by instructor (" + instructor.getName() + "), executing");
 		notifyParticipants();
 	}
 	

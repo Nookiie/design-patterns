@@ -1,5 +1,5 @@
 
-public interface ILead {
+public interface ILeadTrainer {
 	public void setExercise(IExercise exercise);
 	
 	public void subscribe(IParticipant participant);

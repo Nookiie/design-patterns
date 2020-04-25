@@ -1,6 +1,6 @@
 
 public interface IFitnessIntructor {
-	public void subscribe(ILead lead);
+	public void subscribe(ILeadTrainer lead);
 	
 	public void unsubscribe(IParticipant participant);
 	

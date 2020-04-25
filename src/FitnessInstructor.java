@@ -1,11 +1,7 @@
-import java.util.ArrayList;
-
 public class FitnessInstructor implements IFitnessIntructor {
 	private String name;
-	private ILead leadTrainer;
+	private ILeadTrainer leadTrainer;
 	private IExercise currentExercise;
-	private IFitnessIntructor instructor;
-	private ArrayList<IExercise> exercises = new ArrayList<IExercise>();
 	
 	public FitnessInstructor(String name) {
 		this.name = name;
@@ -18,7 +14,7 @@ public class FitnessInstructor implements IFitnessIntructor {
 	}
 	
 	@Override
-	public void subscribe(ILead lead) {
+	public void subscribe(ILeadTrainer lead) {
 		leadTrainer = lead;
 		leadTrainer.setInstructor(this);
 	}

@@ -1,21 +1,20 @@
 
-public class ChatFactory {
+public class ChatFactory implements IChatFactory {
 	public ChatFactory() {
-		
+
 	}
 
-	public ChatEntity createEntity(String entity, String name, IChatRoom chatRoom) {
+	public IChatEntity createEntity(String entity, String name, IChatRoom chatRoom) {
 		ChatEntity chatEntity = null;
-		Bot bot = null;
 
 		if (entity.equals("BOT")) {
-			chatEntity = bot.getInstance(chatRoom, name);
+			chatEntity = Bot.getInstance(chatRoom, name);
 		}
 
 		if (entity.equals("USER")) {
 			chatEntity = new User(chatRoom, name);
 		}
-	
+
 		chatEntity.logIsCreated();
 		return chatEntity;
 	}

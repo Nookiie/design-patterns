@@ -1,13 +1,13 @@
 import java.util.ArrayList;
 
 public interface IChatRoom {
-	void sendMessage(String message, User user);
+	public void sendMessage(String message, ChatEntity user);
 
-	void addUser(User user);
+	public void addUser(User user);
 
-	void addBot(String botName);
-	
-	ArrayList<User> getUsers();
+	public void addBot(String botName);
 
-	void putUserInBanList(User user);
+	public ArrayList<User> getUsers();
+
+	public void putInBanListAndRemove(User user);
 }

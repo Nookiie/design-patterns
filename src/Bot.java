@@ -21,31 +21,25 @@ public class Bot extends ChatEntity {
 	}
 
 	public boolean receiveMessage(String message, User user) {
-		System.out.println(this.getUsername() + " receives a message: " + message);
-		
+		System.out.println(this.getUsername() + " received a message: " + message);
+
 		if (!isMessageOk(message)) {
 			String naughtyWord = getMessageForbiddenWord(message);
-			
-			System.out.println("Message: " + message + " is illegal! \n" + "We do not tolerate the word " + naughtyWord
-					+ " here in our Christian Server!");
+			System.out.println("Message: " + message + " is illegal! \n");
 			banUser(user);
-			
-			System.out.println(user.getUsername() + " has been banned from the chatroom.");
+
+			System.out.println(user.getUsername() + " has been banned from the chatroom.\n");
+			this.sendMessage("We do not tolerate the word " + naughtyWord + " here in our Christian Server!");
 			return false;
 		}
 
 		System.out.println("Message is ok!");
 		return true;
 	}
+
 	@Override
 	public void receiveMessage(String message) {
-		// TODO Auto-generated method stub
 
-	}
-	
-	@Override
-	public void sendMessage(String message) {
-		System.out.println("You have been banned from the chatRoom");
 	}
 
 	private String getMessageForbiddenWord(String message) {
@@ -66,13 +60,6 @@ public class Bot extends ChatEntity {
 	}
 
 	private void banUser(User user) {
-		this.chatRoom.putUserInBanList(user);
+		this.chatRoom.putInBanListAndRemove(user);
 	}
-
-	@Override
-	public void logIsCreated() {
-		System.out.println("Bot: " + this.getUsername() + "  has joined the chat room");
-	}
-
-	
 }

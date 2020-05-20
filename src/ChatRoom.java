@@ -27,7 +27,7 @@ public class ChatRoom implements IChatRoom {
 		// This way we can moderate the message before it gets sent to everyone else
 
 		if (bot != null && !(user.getClass().equals(Bot.class))) {
-			if (!bot.receiveMessage(message, (User) user)) {
+			if (!bot.checkMessage(message, (User) user)) {
 				return;
 			}
 		}

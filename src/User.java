@@ -6,9 +6,4 @@ public class User extends ChatEntity {
 
 		chatRoom.addUser(this);
 	}
-
-	@Override
-	public void receiveMessage(String message) {
-		System.out.println("User " + this.getUsername() + " received message: " + message);
-	}
 }

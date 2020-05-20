@@ -20,26 +20,23 @@ public class Bot extends ChatEntity {
 		return instance;
 	}
 
-	public boolean receiveMessage(String message, User user) {
-		System.out.println(this.getUsername() + " received a message: " + message);
+	public boolean checkMessage(String message, User user) {
+		this.receiveMessage(message);
 
 		if (!isMessageOk(message)) {
 			String naughtyWord = getMessageForbiddenWord(message);
-			System.out.println("Message: " + message + " is illegal! \n");
+			System.out.println("\nMessage: " + message + " is illegal! \n");
+
 			banUser(user);
 
 			System.out.println(user.getUsername() + " has been banned from the chatroom.\n");
 			this.sendMessage("We do not tolerate the word " + naughtyWord + " here in our Christian Server!");
+
 			return false;
 		}
 
 		System.out.println("Message is ok!");
 		return true;
-	}
-
-	@Override
-	public void receiveMessage(String message) {
-
 	}
 
 	private String getMessageForbiddenWord(String message) {

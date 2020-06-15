@@ -4,7 +4,7 @@ public interface ICourierWorker {
 	// State
 	public IState getState();
 
-	public void applyState(IState state);
+	public void applyState(IState state, boolean notifyTeamster);
 
 	// Observer
 	public void update();

@@ -40,11 +40,19 @@ public abstract class CourierWorker implements ICourierWorker {
 		return this.courierStateContext.getState();
 	}
 
-	public void applyState(IState state) {
+	public void applyState(IState state, boolean notifyTeamster) {
 		this.courierStateContext.setState(state);
+
 		System.out.println(this.getName() + " is currently in " + state.getStateName());
 
-		assignedTeamster.notifyObservers();
+		if (this.courierStateContext.getState().getClass().equals(WorkingCourierState.class)) {
+			System.out.println(
+					this.getName() + " is currently preparing package [" + this.currentPackage.getName() + "]");
+		}
+
+		if (notifyTeamster) {
+			this.assignedTeamster.notifyTeamster();
+		}
 	}
 
 	public void setNextWorker(ICourierWorker nextWorker) {
@@ -80,11 +88,9 @@ public abstract class CourierWorker implements ICourierWorker {
 		}
 
 		if (currentPackage == null) {
-			System.out.println("Teamster: " + getName() + " has no package, preparation cancelled");
+			System.out.println("Courier [" + getName() + "] has no package, preparation cancelled");
 			return;
 		}
-
-		System.out.println(this.getName() + " is currently preparing package [" + this.currentPackage.getName() + "]");
 
 		try {
 			Thread.sleep(1000);
@@ -106,11 +112,11 @@ public abstract class CourierWorker implements ICourierWorker {
 	@Override
 	public void preparePackage(Package package1) {
 		this.currentPackage = package1;
-		this.applyState(new WorkingCourierState());
+		this.applyState(new WorkingCourierState(), this.assignedTeamster.isAutomaticNotify());
 	}
 
 	private void cleanUpPackageResponsibility() {
-		this.applyState(new IdleCourierState());
+		this.applyState(new IdleCourierState(), this.assignedTeamster.isAutomaticNotify());
 
 		this.currentPackage = null;
 	}

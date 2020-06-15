@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class CourierServiceMain {
 	private static ICourierWorker getChain(CourierTeamster teamster) {
 
@@ -15,12 +17,61 @@ public class CourierServiceMain {
 		return cityWorker;
 	}
 
-	public static void main(String[] args) {
+	private static void StateFirstApproach() {
+		CourierTeamster teamster = new CourierTeamster("Pesho");
+		teamster.setAutomaticNotify(false);
+
+		ICourierWorker worker = (CourierWorkerCity) getChain(teamster);
+
+		// 3 - International, 2 - Country, 1 - City
+		IPackage package1 = new Package("Nothing Suspicious Stuff", worker, 3);
+		IPackage package2 = new Package("Server Stuff", worker, 2);
+		
+		package1.process();
+		package2.process();
+
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
+		teamster.notifyTeamster();
+	}
+
+	private static void OneByOneApproach() {
 		CourierTeamster teamster = new CourierTeamster("Pesho");
 		ICourierWorker worker = (CourierWorkerCity) getChain(teamster);
 
 		// 3 - International, 2 - Country, 1 - City
 		IPackage package1 = new Package("Nothing Suspicious Stuff", worker, 3);
+		IPackage package2 = new Package("Server Stuff", worker, 2);
+		
 		package1.process();
+		package2.process();
+
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
+
+	public static void main(String[] args) {
+		// Finished the exercise in 2 different ways
+		
+		// StateFirstApproach() - States of the courier workers are set first, and then the
+		// teamster is manually notified and retrieves every package
+		
+		// OneByOneApproach() - States, package preparation and teamster retrieval is done
+		// one-by-one per package fully
+
+		// Allocates the packages to their concurrent workers and sets their states
+		// After that the teamster is manually activated
+			OneByOneApproach();
+
+		// One-by-one package allocation and work, as well as automatic notifying teamster retrieval
+			 //StateFirstApproach();
+	}
+
 }

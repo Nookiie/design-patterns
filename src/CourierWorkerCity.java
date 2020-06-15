@@ -1,6 +1,8 @@
 
 public class CourierWorkerCity extends CourierWorker{
-	public CourierWorkerCity() {
+	public CourierWorkerCity(String name) {
+		super(name);
+		
 		this.level = CourierWorker.CITY;
 	}
 

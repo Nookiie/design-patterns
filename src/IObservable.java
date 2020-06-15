@@ -1,7 +1,7 @@
 
 public interface IObservable {
-	public void subscribe(IObserver observer);
-	public void unsubscribe(IObserver observer);
+	public void subscribe(ICourierWorker observer);
+	public void unsubscribe(ICourierWorker observer);
 	public void notifyObservers();
 	public String getUpdate();
 }

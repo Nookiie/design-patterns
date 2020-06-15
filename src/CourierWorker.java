@@ -1,24 +1,48 @@
-import java.util.ArrayList;
-
-public abstract class CourierWorker implements IObservable{
+public abstract class CourierWorker implements ICourierWorker{
 	
-	// Observer variables
+	// Observer 
 	private String name;
-	private ArrayList<IObserver> observers = new ArrayList<IObserver>(); 	
+	private IObservable assignedTeamster;
 	
-	// Chain of Responsibility variables
+	// Chain of Responsibility 
 	public static int CITY = 1;
 	public static int COUNTRY = 2;
 	public static int INTERNATIONAL = 3;
+	
 	protected int level;
 	protected CourierWorker nextWorker;
 	
-	// State variables
-	public CourierState courierState;
-	public Context courierContext;
+	// State 
+	public Context courierStateContext = new Context();
 	
-	public void setNextWorker(CourierWorker nextWorker) {
-		this.nextWorker = nextWorker;
+	public Package currentPackage;
+	
+	public CourierWorker(String name) {
+		this.name = name;
+		
+		// Every worker starts out in an idle state
+		this.courierStateContext.setState(new IdleState());
+	}
+	
+	private String getName() {
+		return this.name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public IState getState() {
+		return this.courierStateContext.getState();
+	}
+	
+	public void applyState(IState state) {
+		this.courierStateContext.setState(state);
+		System.out.println(this.getName() + " is currently in a state of " + state.getStateName());
+	}
+	
+	public void setNextWorker(ICourierWorker nextWorker) {
+		this.nextWorker = (CourierWorker) nextWorker;
 	}
 	
 	public void sendPackage(int level, String message) {
@@ -32,7 +56,7 @@ public abstract class CourierWorker implements IObservable{
 	}
 	
 	public void receivePackage(int level, String message) {
-		this.courierContext.setState(new WorkingState());
+		this.courierStateContext.setState(new WorkingState());
 		
 		if(this.level <= level) {
 			this.writeMessage(message);
@@ -42,34 +66,51 @@ public abstract class CourierWorker implements IObservable{
 			this.nextWorker.sendPackage(level, message);
 		}
 	}
-	
-	public void setName(String name) {
-		this.name = name;
-		this.notifyObservers();
-	}
-	
-	@Override
-	public void subscribe(IObserver observer) {
-		this.observers.add(observer);
-		observer.setWatchedWorker(this);
-	}
 
 	@Override
-	public void unsubscribe(IObserver observer) {
-		this.observers.remove(observer);
-	}
-
-	@Override
-	public void notifyObservers() {
-		for(IObserver observer : this.observers) {
-			observer.update();
+	public void update() {
+		if(assignedTeamster == null) {
+			System.out.println("No teamster assigned, preparation cancelled");
+			return;
 		}
-	}
+		
+		if(currentPackage == null) {
+			System.out.println("Teamster: " + getName() + " has no package, preparation cancelled");
+			return;
+		}
+		
+		System.out.println(this.getName() + " is currently preparing package: " + this.currentPackage.getName());
+		
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
+		System.out.println("Assigned teamster: " + this.assignedTeamster.getUpdate() + " has taken package: " + currentPackage.getName() +" from worker: " + this.getName());
+		
+		cleanUpPackageResponsibility();
+	}	
 
 	@Override
-	public String getUpdate() {
-		return this.name;
+	public void setTeamster(IObservable teamster) {
+		this.assignedTeamster = teamster;
 	}
+	
+	@Override
+	public void preparePackage(Package package1) {
+		this.currentPackage = package1;
+		this.applyState(new WorkingState());
+		
+		this.update();
+	}
+	
+	private void cleanUpPackageResponsibility() {
+		this.applyState(new IdleState());
+		
+		this.currentPackage = null;
+	}
+	
 	
 	abstract protected void writeMessage(String message);
 }

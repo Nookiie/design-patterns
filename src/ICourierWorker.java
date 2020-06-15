@@ -7,11 +7,11 @@ public interface ICourierWorker {
 	
 	// Observer
 	public void update();
-	public void setTeamster(IObservable topic);
+	public void setTeamster(ICourierTeamster topic);
 	public void preparePackage(Package package1);
 	
 	// Chain of Responsibility
 	public void setNextWorker(ICourierWorker nextWorker);
-	public void sendPackage(int level);
+	public void sendPackage(int level, IPackage package1);
 	public int getLevel();
 }

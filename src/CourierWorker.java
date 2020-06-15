@@ -2,7 +2,7 @@ public abstract class CourierWorker implements ICourierWorker{
 	
 	// Observer 
 	private String name;
-	private IObservable assignedTeamster;
+	private ICourierTeamster assignedTeamster;
 	
 	// Chain of Responsibility 
 	public static int CITY = 1;
@@ -21,7 +21,7 @@ public abstract class CourierWorker implements ICourierWorker{
 		this.name = name;
 		
 		// Every worker starts out in an idle state
-		this.courierStateContext.setState(new IdleState());
+		this.courierStateContext.setState(new IdleCourierState());
 	}
 	
 	public String getName() {
@@ -51,28 +51,20 @@ public abstract class CourierWorker implements ICourierWorker{
 		this.nextWorker = (CourierWorker) nextWorker;
 	}
 	
-	public void sendPackage(int level) {
+	public void sendPackage(int level, IPackage package1) {
 		if(this.level <= level) {
 			this.writeMessage();
 		}
 		
 		if(this.nextWorker != null) {
-			this.nextWorker.sendPackage(level);
+			this.nextWorker.sendPackage(level, package1);
 		}
+		
+		if(this.level == level) {
+			package1.setAssignedWorker(this);
+		}		
 	}
 	
-	public void receivePackage(int level, String message) {
-		this.courierStateContext.setState(new WorkingState());
-		
-		if(this.level <= level) {
-			this.writeMessage();
-		}
-		
-		if(this.nextWorker != null) {
-			this.nextWorker.sendPackage(level);
-		}
-	}
-
 	@Override
 	public void update() {
 		if(assignedTeamster == null) {
@@ -85,7 +77,7 @@ public abstract class CourierWorker implements ICourierWorker{
 			return;
 		}
 		
-		System.out.println(this.getName() + " is currently preparing package: " + this.currentPackage.getName());
+		System.out.println(this.getName() + " is currently preparing package [" + this.currentPackage.getName() + "]");
 		
 		try {
 			Thread.sleep(1000);
@@ -101,18 +93,18 @@ public abstract class CourierWorker implements ICourierWorker{
 	}	
 
 	@Override
-	public void setTeamster(IObservable teamster) {
+	public void setTeamster(ICourierTeamster teamster) {
 		this.assignedTeamster = teamster;
 	}
 	
 	@Override
 	public void preparePackage(Package package1) {
 		this.currentPackage = package1;
-		this.applyState(new WorkingState());
+		this.applyState(new WorkingCourierState());
 	}
 	
 	private void cleanUpPackageResponsibility() {
-		this.applyState(new IdleState());
+		this.applyState(new IdleCourierState());
 		
 		this.currentPackage = null;
 	}

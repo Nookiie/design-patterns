@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class CourierTeamster implements IObservable{
+public class CourierTeamster implements ICourierTeamster{
 	private ArrayList<ICourierWorker> observers = new ArrayList<ICourierWorker>();
 	private String name;
 	
@@ -27,7 +27,7 @@ public class CourierTeamster implements IObservable{
 	@Override
 	public void notifyObservers() {
 		for(ICourierWorker observer: this.observers) {
-			if(observer.getState().getClass() == WorkingState.class) {
+			if(observer.getState().getClass() == WorkingCourierState.class) {
 				observer.update();	
 			}
 		}

@@ -30,6 +30,7 @@ public class CourierServiceMain {
 		ICourierWorker worker = (CourierWorkerCity) getChain(teamster);
 	
 		// 3 - International, 2 - Country, 1 - City
-		Package package1 = new Package("Server Stuff", worker, couriers, 3);
+		Package package1 = new Package("Server Stuff", worker, 3);
+		package1.process(couriers);
 	}
 }

@@ -24,7 +24,7 @@ public abstract class CourierWorker implements ICourierWorker{
 		this.courierStateContext.setState(new IdleState());
 	}
 	
-	private String getName() {
+	public String getName() {
 		return this.name;
 	}
 	
@@ -42,20 +42,22 @@ public abstract class CourierWorker implements ICourierWorker{
 	
 	public void applyState(IState state) {
 		this.courierStateContext.setState(state);
-		System.out.println(this.getName() + " is currently in a state of " + state.getStateName());
+		System.out.println(this.getName() + " is currently in " + state.getStateName());
+		
+		assignedTeamster.notifyObservers();
 	}
 	
 	public void setNextWorker(ICourierWorker nextWorker) {
 		this.nextWorker = (CourierWorker) nextWorker;
 	}
 	
-	public void sendPackage(int level, String message) {
+	public void sendPackage(int level) {
 		if(this.level <= level) {
 			this.writeMessage();
 		}
 		
 		if(this.nextWorker != null) {
-			this.nextWorker.sendPackage(level, message);
+			this.nextWorker.sendPackage(level);
 		}
 	}
 	
@@ -67,7 +69,7 @@ public abstract class CourierWorker implements ICourierWorker{
 		}
 		
 		if(this.nextWorker != null) {
-			this.nextWorker.sendPackage(level, message);
+			this.nextWorker.sendPackage(level);
 		}
 	}
 
@@ -107,8 +109,6 @@ public abstract class CourierWorker implements ICourierWorker{
 	public void preparePackage(Package package1) {
 		this.currentPackage = package1;
 		this.applyState(new WorkingState());
-		
-		this.update();
 	}
 	
 	private void cleanUpPackageResponsibility() {

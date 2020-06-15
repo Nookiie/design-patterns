@@ -27,7 +27,9 @@ public class CourierTeamster implements IObservable{
 	@Override
 	public void notifyObservers() {
 		for(ICourierWorker observer: this.observers) {
-			observer.update();
+			if(observer.getState().getClass() == WorkingState.class) {
+				observer.update();	
+			}
 		}
 	}
 

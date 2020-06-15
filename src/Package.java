@@ -3,11 +3,16 @@ import java.util.ArrayList;
 public class Package {
 	private String name;
 	private ICourierWorker assignedWorker;
+	private int toCode;
 	
-	public Package(String name, ICourierWorker worker, ArrayList<ICourierWorker> couriers, int toCode) {
+	public Package(String name, ICourierWorker worker, int toCode) {
 		this.name = name;
-		
-		worker.sendPackage(toCode, "Sending package: " + name);
+		this.assignedWorker = worker;
+		this.toCode = toCode;
+	}
+	
+	public void process(ArrayList<ICourierWorker> couriers) {
+		this.assignedWorker.sendPackage(toCode);
 		setCorrespondingPackageCourier(toCode, couriers);
 		this.assignedWorker.preparePackage(this);
 	}

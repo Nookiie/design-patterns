@@ -8,6 +8,6 @@ public class CourierWorkerCountry extends CourierWorker {
 
 	@Override
 	protected void writeMessage() {
-		System.out.println("Package has gone through country courier: ");
+		System.out.println("Package has gone through Country Courier [" + this.getName() + "]");
 	}
 }

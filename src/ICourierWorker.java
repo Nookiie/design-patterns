@@ -13,4 +13,5 @@ public interface ICourierWorker {
 	// Chain of Responsibility
 	public void setNextWorker(ICourierWorker nextWorker);
 	public void sendPackage(int level, String message);
+	public int getLevel();
 }

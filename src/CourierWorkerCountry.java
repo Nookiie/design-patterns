@@ -7,7 +7,7 @@ public class CourierWorkerCountry extends CourierWorker {
 	}
 
 	@Override
-	protected void writeMessage(String message) {
-		System.out.println("Country Package Message: " + message);
+	protected void writeMessage() {
+		System.out.println("Package has gone through country courier: ");
 	}
 }

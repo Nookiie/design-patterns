@@ -32,6 +32,10 @@ public abstract class CourierWorker implements ICourierWorker{
 		this.name = name;
 	}
 	
+	public int getLevel() {
+		return this.level;
+	}
+	
 	public IState getState() {
 		return this.courierStateContext.getState();
 	}
@@ -47,7 +51,7 @@ public abstract class CourierWorker implements ICourierWorker{
 	
 	public void sendPackage(int level, String message) {
 		if(this.level <= level) {
-			this.writeMessage(message);
+			this.writeMessage();
 		}
 		
 		if(this.nextWorker != null) {
@@ -59,7 +63,7 @@ public abstract class CourierWorker implements ICourierWorker{
 		this.courierStateContext.setState(new WorkingState());
 		
 		if(this.level <= level) {
-			this.writeMessage(message);
+			this.writeMessage();
 		}
 		
 		if(this.nextWorker != null) {
@@ -87,7 +91,9 @@ public abstract class CourierWorker implements ICourierWorker{
 			e.printStackTrace();
 		}
 		
-		System.out.println("Assigned teamster: " + this.assignedTeamster.getUpdate() + " has taken package: " + currentPackage.getName() +" from worker: " + this.getName());
+		System.out.println("Assigned teamster " + "[" + this.assignedTeamster.getUpdate() + "]" 
+		+ " has taken package " + "[" + currentPackage.getName() +"]"
+		+" from worker " + "[" + this.getName() + "]");
 		
 		cleanUpPackageResponsibility();
 	}	
@@ -112,5 +118,5 @@ public abstract class CourierWorker implements ICourierWorker{
 	}
 	
 	
-	abstract protected void writeMessage(String message);
+	abstract protected void writeMessage();
 }

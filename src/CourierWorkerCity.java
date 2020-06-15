@@ -7,7 +7,7 @@ public class CourierWorkerCity extends CourierWorker{
 	}
 
 	@Override
-	protected void writeMessage(String message) {
-		System.out.println("City Package Message: " + message);
+	protected void writeMessage() {
+		System.out.println("Package has gone through city courier ");
 	}
 }

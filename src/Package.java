@@ -1,18 +1,18 @@
 public class Package implements IPackage {
 	private String name;
 	private ICourierWorker assignedWorker;
-	private int toCode;
-	
-	public Package(String name, ICourierWorker worker, int toCode) {
+	private int level;
+
+	public Package(String name, ICourierWorker worker, int level) {
 		this.name = name;
 		this.assignedWorker = worker;
-		this.toCode = toCode;
+		this.level = level;
 	}
-	
+
 	public void process() {
-		this.assignedWorker.sendPackage(toCode, this);
-		// setCorrespondingPackageCourier(toCode, courier);
-		this.assignedWorker.preparePackage(this);
+		if (this.assignedWorker.sendPackage(level, this)) {
+			this.assignedWorker.preparePackage(this);
+		}
 	}
 
 	public String getName() {
@@ -22,7 +22,7 @@ public class Package implements IPackage {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public ICourierWorker getAssignedWorker() {
 		return assignedWorker;
 	}
@@ -30,5 +30,4 @@ public class Package implements IPackage {
 	public void setAssignedWorker(ICourierWorker assignedWorker) {
 		this.assignedWorker = assignedWorker;
 	}
-
 }

@@ -2,7 +2,7 @@
 public class CourierWorkerInternational extends CourierWorker {
 	public CourierWorkerInternational(String name) {
 		super(name);
-		
+
 		this.level = CourierWorker.INTERNATIONAL;
 	}
 

@@ -1,9 +1,9 @@
 import java.util.ArrayList;
 
-public class CourierTeamster implements ICourierTeamster{
+public class CourierTeamster implements ICourierTeamster {
 	private ArrayList<ICourierWorker> observers = new ArrayList<ICourierWorker>();
 	private String name;
-	
+
 	public CourierTeamster(String name) {
 		this.name = name;
 	}
@@ -26,9 +26,9 @@ public class CourierTeamster implements ICourierTeamster{
 
 	@Override
 	public void notifyObservers() {
-		for(ICourierWorker observer: this.observers) {
-			if(observer.getState().getClass() == WorkingCourierState.class) {
-				observer.update();	
+		for (ICourierWorker observer : this.observers) {
+			if (observer.getState().getClass() == WorkingCourierState.class) {
+				observer.update();
 			}
 		}
 	}
